@@ -1,3 +1,5 @@
+
+var targetURI = "Your API URI";
 var express = require('express'),
     request = require('request'),
     bodyParser = require('body-parser'),
@@ -14,17 +16,19 @@ app.all('*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE");
     res.header("Access-Control-Allow-Headers", req.header('access-control-request-headers'));
+    //res.header('content-type'), req.header('application/json');
 
     if (req.method === 'OPTIONS') {
         // CORS Preflight
         res.send();
     } else {
-        var targetURL = req.header('Target-URL');
-        if (!targetURL) {
+        if (targetURI === "Your API URI") {
             res.send(500, { error: 'There is no Target-Endpoint header in the request' });
             return;
         }
-        request({ url: targetURL + req.url, method: req.method, json: req.body, headers: {'Authorization': req.header('Authorization')} },
+        request({ url: targetURI + req.url, method: req.method, json: req.body
+           
+        },
             function (error, response, body) {
                 if (error) {
                     console.error('error: ' + response.statusCode)
